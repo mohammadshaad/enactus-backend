@@ -1,66 +1,70 @@
 require("dotenv").config();
 const express = require("express");
 const Razorpay = require("razorpay");
+const crypto = require("crypto");
 
 const router = express.Router();
 
 router.post("/orders", async (req, res) => {
-    try {
-        const instance = new Razorpay({
-            key_id: process.env.RAZORPAY_KEY_ID,
-            key_secret: process.env.RAZORPAY_SECRET,
-        });
+  try {
+    const instance = new Razorpay({
+      key_id: process.env.RAZORPAY_KEY_ID,
+      key_secret: process.env.RAZORPAY_SECRET,
+    });
 
-        const options = {
-            amount: 50000, // amount in smallest currency unit
-            currency: "INR",
-            receipt: "receipt_order_74394",
-        };
+    // Updated the amount to use the total price from CartContext
+    const options = {
+      amount: req.body.totalPrice * 100,
+      currency: "INR",
+      receipt: "receipt_order_74394",
+    };
 
-        const order = await instance.orders.create(options);
+    const order = await instance.orders.create(options);
 
-        if (!order) return res.status(500).send("Some error occured");
+    if (!order) return res.status(500).send("Some error occurred");
 
-        res.json(order);
-    } catch (error) {
-        res.status(500).send(error);
-    }
+    res.json(order);
+  } catch (error) {
+    res.status(500).send(error);
+  }
 });
 
 router.post("/success", async (req, res) => {
-    try {
-        // getting the details back from our font-end
-        const {
-            orderCreationId,
-            razorpayPaymentId,
-            razorpayOrderId,
-            razorpaySignature,
-        } = req.body;
+  try {
+    console.log("Webhook Received:", req.body); // Log the received webhook payload
 
-        // Creating our own digest
-        // The format should be like this:
-        // digest = hmac_sha256(orderCreationId + "|" + razorpayPaymentId, secret);
-        const shasum = crypto.createHmac("sha256", "w2lBtgmeuDUfnJVp43UpcaiT");
+    // getting the details back from our front-end
+    const {
+      orderCreationId,
+      razorpayPaymentId,
+      razorpayOrderId,
+      razorpaySignature,
+    } = req.body;
 
-        shasum.update(`${orderCreationId}|${razorpayPaymentId}`);
+    // Creating our own digest
+    const shasum = crypto.createHmac("sha256", "w2lBtgmeuDUfnJVp43UpcaiT");
 
-        const digest = shasum.digest("hex");
+    const dataForDigestCalculation = `${orderCreationId}|${razorpayPaymentId}`;
+    console.log("Data for Digest Calculation:", dataForDigestCalculation);
 
-        // comaparing our digest with the actual signature
-        if (digest !== razorpaySignature)
-            return res.status(400).json({ msg: "Transaction not legit!" });
+    shasum.update(dataForDigestCalculation);
 
-        // THE PAYMENT IS LEGIT & VERIFIED
-        // YOU CAN SAVE THE DETAILS IN YOUR DATABASE IF YOU WANT
+    const digest = shasum.digest("hex");
 
-        res.json({
-            msg: "success",
-            orderId: razorpayOrderId,
-            paymentId: razorpayPaymentId,
-        });
-    } catch (error) {
-        res.status(500).send(error);
-    }
+    console.log("Calculated Digest:", digest);
+
+    // comparing our digest with the actual signature
+    if (digest !== razorpaySignature)
+      return res.status(400).json({ msg: "Transaction not legit!" });
+
+    res.json({
+      msg: "success",
+      orderId: razorpayOrderId,
+      paymentId: razorpayPaymentId,
+    });
+  } catch (error) {
+    res.status(500).send(error);
+  }
 });
 
 module.exports = router;
