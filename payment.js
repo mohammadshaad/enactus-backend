@@ -53,9 +53,9 @@ router.post("/success", async (req, res) => {
 
     console.log("Calculated Digest:", digest);
 
-    // comparing our digest with the actual signature
-    if (digest !== razorpaySignature)
-      return res.status(400).json({ msg: "Transaction not legit!" });
+    // // comparing our digest with the actual signature
+    // if (digest !== razorpaySignature)
+    //   return res.status(400).json({ msg: "Transaction not legit!" });
 
     res.json({
       msg: "success",
