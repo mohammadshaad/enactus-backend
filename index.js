@@ -1,11 +1,13 @@
 const express = require("express");
+const cors = require("cors");
 
 const app = express();
 const port = process.env.PORT || 8080;
 
-const cors = require("cors");
+// Update the array to include the new URL
+const allowedOrigins = ["http://localhost:3000", "https://www.enactusvitc.com"];
 
-app.use(cors({ origin: "http://localhost:3000" }));
+app.use(cors({ origin: allowedOrigins }));
 
 // middlewares
 app.use(express.json({ extended: false }));
