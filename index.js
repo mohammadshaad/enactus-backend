@@ -4,11 +4,18 @@ const cors = require("cors");
 const app = express();
 const port = process.env.PORT || 8080;
 
-// Allow requests from specified origins
+// Update the array to include the new URL
+const allowedOrigins = ["http://localhost:3000", "https://www.enactusvitc.com", "https://enactusvitc.com/success/*"];
+
+// Function to check if the origin is allowed
 const corsOptions = {
-  origin: ["http://localhost:3000", "https://www.enactusvitc.com"],
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  credentials: true,
+  origin: function (origin, callback) {
+    if (allowedOrigins.indexOf(origin) !== -1 || origin.startsWith("https://enactusvitc.com/success/")) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
 };
 
 app.use(cors(corsOptions));
