@@ -25,7 +25,7 @@ router.post("/orders", async (req, res) => {
 
     res.json(order);
   } catch (error) {
-    res.status(500).send(error);
+    res.status(500).send(error.message || error.toString());
   }
 });
 
@@ -41,29 +41,30 @@ router.post("/success", async (req, res) => {
       razorpaySignature,
     } = req.body;
 
-    // Creating our own digest
-    const shasum = crypto.createHmac("sha256", "w2lBtgmeuDUfnJVp43UpcaiT");
+    const body = razorpayOrderId + "|" + razorpayPaymentId;
 
-    const dataForDigestCalculation = `${orderCreationId}|${razorpayPaymentId}`;
-    console.log("Data for Digest Calculation:", dataForDigestCalculation);
+    const expectedSignature = crypto
+      .createHmac("sha256", process.env.RAZORPAY_SECRET)
+      .update(body.toString())
+      .digest("hex");
 
-    shasum.update(dataForDigestCalculation);
+    const isAuthentic = expectedSignature === razorpaySignature;
 
-    const digest = shasum.digest("hex");
+    if (isAuthentic) {
+      res.json({
+        msg: "success",
+        orderId: razorpayOrderId,
+        paymentId: razorpayPaymentId,
+      });
 
-    console.log("Calculated Digest:", digest);
-
-    // // comparing our digest with the actual signature
-    // if (digest !== razorpaySignature)
-    //   return res.status(400).json({ msg: "Transaction not legit!" });
-
-    res.json({
-      msg: "success",
-      orderId: razorpayOrderId,
-      paymentId: razorpayPaymentId,
-    });
+      res.redirect(
+        `http://localhost:3000/success?reference=${razorpayPaymentId}`
+      );
+    } else {
+      res.status(400).json({ msg: "Transaction not legit!" });
+    }
   } catch (error) {
-    res.status(500).send(error);
+    res.status(500).send(error.message || error.toString());
   }
 });
 
