@@ -1,0 +1,7 @@
+{
+    "headers": [
+      { "source": "/payment/orders", "headers": [{"key": "Access-Control-Allow-Origin", "value": "*"}] },
+      { "source": "/payment/success", "headers": [{"key": "Access-Control-Allow-Origin", "value": "*"}] }
+    ]
+  }
+  
