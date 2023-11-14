@@ -52,7 +52,7 @@ app.use((req, res, next) => {
   }
 });
 
-// Your routes and other middleware here
+app.use("/payment", require("./payment"));
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
