@@ -10,7 +10,7 @@ const allowedOrigins = ["http://localhost:3000", "https://www.enactusvitc.com"];
 // Function to check if the origin is allowed
 const corsOptions = {
   origin: function (origin, callback) {
-    if (allowedOrigins.includes(origin) || origin.startsWith("https://enactusvitc.com/success")) {
+    if (allowedOrigins.includes(origin) || origin.startsWith("https://enactusvitc.com")) {
       callback(null, true);
     } else {
       callback(new Error("Not allowed by CORS"));
