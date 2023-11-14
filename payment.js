@@ -57,9 +57,9 @@ router.post("/success", async (req, res) => {
         paymentId: razorpayPaymentId,
       });
 
-      res.redirect(
-        `http://localhost:3000/success?reference=${razorpayPaymentId}`
-      );
+      // res.redirect(
+      //   `http://localhost:3000/success?reference=${razorpayPaymentId}`
+      // );
     } else {
       res.status(400).json({ msg: "Transaction not legit!" });
     }
