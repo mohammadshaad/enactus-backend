@@ -71,19 +71,19 @@ router.post("/success", async (req, res) => {
     const isAuthentic = expectedSignature === razorpaySignature;
 
     if (isAuthentic) {
-      // res.json({
-      //   msg: "success",
-      //   orderId: razorpayOrderId,
-      //   paymentId: razorpayPaymentId,
-      // });
+      res.json({
+        msg: "success",
+        orderId: razorpayOrderId,
+        paymentId: razorpayPaymentId,
+      });
 
       // Send razorpayPaymentId to the frontend
       // res.redirect(
       //   `https://www.enactusvitc.com/success/${razorpayPaymentId}`
       // );
-      res.redirect(
-        `https://www.enactusvitc.com/success`
-      );
+      // res.redirect(
+      //   `https://www.enactusvitc.com/success`
+      // );
     } else {
       res.status(400).json({ msg: "Transaction not legit!" });
     }
