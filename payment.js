@@ -61,8 +61,11 @@ router.post("/success", async (req, res) => {
       // });
 
       // Send razorpayPaymentId to the frontend
+      // res.redirect(
+      //   `https://www.enactusvitc.com/success/${razorpayPaymentId}`
+      // );
       res.redirect(
-        `https://www.enactusvitc.com/success/${razorpayPaymentId}`
+        `https://www.enactusvitc.com/success`
       );
     } else {
       res.status(400).json({ msg: "Transaction not legit!" });
