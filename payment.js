@@ -8,6 +8,23 @@ const router = express.Router();
 
 router.use(cors());
 
+// Enable CORS for all routes
+router.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', 'https://www.enactusvitc.com'); // Specify the allowed origin
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS'); // Specify the allowed HTTP methods
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization'); // Specify the allowed headers
+  res.header('Access-Control-Allow-Credentials', true); // Allow sending cookies from the origin
+  res.header('Access-Control-Max-Age', '86400'); // Cache the preflight request for 24 hours
+
+  if (req.method === 'OPTIONS') {
+  // Handle preflight requests
+    res.sendStatus(200);
+  } else {
+    next();
+  }
+});
+
+
 router.post("/orders", async (req, res) => {
   try {
     const instance = new Razorpay({
