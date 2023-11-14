@@ -2,10 +2,8 @@ require("dotenv").config();
 const express = require("express");
 const Razorpay = require("razorpay");
 const crypto = require("crypto");
-const cors = require('cors');
 
 const router = express.Router();
-app.use(cors());
 
 router.post("/orders", async (req, res) => {
   try {
