@@ -10,7 +10,7 @@ const allowedOrigins = ["http://localhost:3000", "https://www.enactusvitc.com"];
 // Function to check if the origin is allowed
 const corsOptions = {
   origin: function (origin, callback) {
-    if (allowedOrigins.indexOf(origin) !== -1 || origin.startsWith("https://enactusvitc.com/payment/success/")) {
+    if (allowedOrigins.includes(origin) || origin.startsWith("https://enactusvitc.com/success")) {
       callback(null, true);
     } else {
       callback(new Error("Not allowed by CORS"));
@@ -21,7 +21,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 // middlewares
-app.use(express.json({ extended: false }));
+app.use(express.json()); // removed { extended: false } as it is not needed
 
 // routes
 app.get("/", (req, res) => res.send("API running"));
