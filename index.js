@@ -43,7 +43,7 @@ const port = process.env.PORT || 8080;
 
 // Enable CORS for all routes
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*'); // Specify the allowed origin
+  res.header('Access-Control-Allow-Origin', 'https://www.enactusvitc.com'); // Specify the allowed origin
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS'); // Specify the allowed HTTP methods
   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization'); // Specify the allowed headers
   res.header('Access-Control-Allow-Credentials', true); // Allow sending cookies from the origin
