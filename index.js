@@ -20,6 +20,9 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
+// Handling preflight requests
+app.options("*", cors());
+
 // middlewares
 app.use(express.json()); // removed { extended: false } as it is not needed
 
