@@ -51,15 +51,16 @@ router.post("/success", async (req, res) => {
     const isAuthentic = expectedSignature === razorpaySignature;
 
     if (isAuthentic) {
-      res.json({
-        msg: "success",
-        orderId: razorpayOrderId,
-        paymentId: razorpayPaymentId,
-      });
+      // res.json({
+      //   msg: "success",
+      //   orderId: razorpayOrderId,
+      //   paymentId: razorpayPaymentId,
+      // });
 
-      // res.redirect(
-      //   `http://localhost:3000/success?reference=${razorpayPaymentId}`
-      // );
+      // Send razorpayPaymentId to the frontend
+      res.redirect(
+        `http://localhost:3000/success?paymentId=${razorpayPaymentId}`
+      );
     } else {
       res.status(400).json({ msg: "Transaction not legit!" });
     }
