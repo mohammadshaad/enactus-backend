@@ -10,11 +10,12 @@ router.use(cors());
 
 // Enable CORS for all routes
 router.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'https://www.enactusvitc.com'); // Specify the allowed origin
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS'); // Specify the allowed HTTP methods
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization'); // Specify the allowed headers
-  res.header('Access-Control-Allow-Credentials', true); // Allow sending cookies from the origin
-  res.header('Access-Control-Max-Age', '86400'); // Cache the preflight request for 24 hours
+  res.header('Access-Control-Allow-Origin', 'http://localhost:3000'); 
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS'); 
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization'); 
+  res.header('Access-Control-Allow-Credentials', true); 
+  res.header('Access-Control-Max-Age', '86400'); 
+  res.header('Access-Control-Allow-Origin', 'https://www.enactusvitc.com'); 
 
   if (req.method === 'OPTIONS') {
   // Handle preflight requests
