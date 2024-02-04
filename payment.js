@@ -10,21 +10,20 @@ router.use(cors());
 
 // Enable CORS for all routes
 router.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:3000'); 
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS'); 
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization'); 
-  res.header('Access-Control-Allow-Credentials', true); 
-  res.header('Access-Control-Max-Age', '86400'); 
-  res.header('Access-Control-Allow-Origin', 'https://www.enactusvitc.com'); 
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.header("Access-Control-Allow-Credentials", true);
+  res.header("Access-Control-Max-Age", "86400");
+  res.header("Access-Control-Allow-Origin", "https://www.enactusvitc.com");
 
-  if (req.method === 'OPTIONS') {
-  // Handle preflight requests
+  if (req.method === "OPTIONS") {
+    // Handle preflight requests
     res.sendStatus(200);
   } else {
     next();
   }
 });
-
 
 router.post("/orders", async (req, res) => {
   try {
@@ -85,8 +84,8 @@ router.post("/success", async (req, res) => {
       // res.redirect(
       //   `https://www.enactusvitc.com/success`
       // );
-    } else {
-      res.status(400).json({ msg: "Transaction not legit!" });
+      // } else {
+      //   res.status(400).json({ msg: "Transaction not legit!" });
     }
   } catch (error) {
     res.status(500).send(error.message || error.toString());
